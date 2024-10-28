@@ -1,11 +1,11 @@
 import { render, remove, RenderPosition } from '../framework/render.js';
-import SortingView from '../view/sorting-view.js';
-import TripListView from '../view/trip-list-view.js';
-import ListEmptyView from '../view/list-empty-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import LoadingListView from '../view/loading-list-view.js';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+import SortingView from '../view/sorting-view.js';
+import TripListView from '../view/trip-list-view.js';
+import ListEmptyView from '../view/list-empty-view.js';
 import { sortPointsByDay, findSortingDuration, filter } from '../util.js';
 import { FilterType, SortingType, UpdateType, UserAction } from '../const.js';
 
@@ -114,6 +114,7 @@ export default class TripPresenter {
         } catch (err) {
           this.#pointPresenters.get(update.id).setAborting();
         }
+        this.#uiBlocker.unblock();
         break;
       case UserAction.ADD_POINT:
         this.#newPointPresenter.setSaving();
@@ -122,6 +123,7 @@ export default class TripPresenter {
         } catch(err) {
           this.#newPointPresenter.setAborting();
         }
+        this.#uiBlocker.unblock();
         break;
       case UserAction.DELETE_POINT:
         this.#pointPresenters.get(update.id).setDeleting();
@@ -130,8 +132,10 @@ export default class TripPresenter {
         } catch(err) {
           this.#pointPresenters.get(update.id).setAborting();
         }
+        this.#uiBlocker.unblock();
         break;
     }
+
     this.#uiBlocker.unblock();
   };
 
