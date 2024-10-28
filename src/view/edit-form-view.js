@@ -184,8 +184,8 @@ export default class EditFormView extends AbstractStatefulView {
         /* eslint-disable */
         time_24hr: true,
         /* eslint-enable */
+        minuteIncrement: 1,
         defaultDate: this._state.dateFrom,
-        minDate: new Date(),
         maxDate: this._state.dateTo,
         onChange: this.#dateFromChangeHandler
       }
